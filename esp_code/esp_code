@@ -21,3 +21,13 @@ unsigned long lastBlink = 0;
 void IRAM_ATTR handleInterrupt() {
   emergency = true;
 }
+
+void sendStatus(const char* status) {
+  StaticJsonDocument<200> doc;
+  doc["id"] = "esp1";
+  doc["status"] = status;
+  String jsonStr;
+  serializeJson(doc, jsonStr);
+  webSocket.sendTXT(jsonStr);
+}
+
