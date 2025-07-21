@@ -31,3 +31,23 @@ void sendStatus(const char* status) {
   webSocket.sendTXT(jsonStr);
 }
 
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), handleInterrupt, FALLING);
+
+  Serial.begin(115200);
+
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  webSocket.begin(server, port, "/");
+  webSocket.onEvent(webSocketEvent);
+  sendStatus("שגרה");
+}
+
