@@ -76,3 +76,16 @@ void loop() {
   }
 }
 
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+  if (type == WStype_TEXT) {
+    StaticJsonDocument<200> doc;
+    DeserializationError err = deserializeJson(doc, payload);
+    if (!err) {
+      const char* status = doc["status"];
+      if (String(status) == "ניטרול") {
+        activeEmergency = false;
+        sendStatus("שגרה");
+      }
+    }
+  }
+}
