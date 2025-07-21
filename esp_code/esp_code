@@ -51,3 +51,28 @@ void setup() {
   sendStatus("שגרה");
 }
 
+
+void loop() {
+  webSocket.loop();
+
+  if (emergency && !activeEmergency) {
+    emergency = false;
+    activeEmergency = true;
+    sendStatus("מצוקה");
+  }
+
+  if (activeEmergency) {
+    digitalWrite(LED_PIN, millis() % 500 < 250);
+    analogWrite(BUZZER_PIN, (millis() / 300) % 2 == 0 ? 500 : 1000);
+  } else {
+    unsigned long now = millis();
+    if (now - lastBlink > 600000) {
+      digitalWrite(LED_PIN, HIGH);
+      delay(100);
+      digitalWrite(LED_PIN, LOW);
+      lastBlink = now;
+    }
+    analogWrite(BUZZER_PIN, 0);
+  }
+}
+
