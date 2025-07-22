@@ -10,3 +10,6 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 const clients = new Map();
+
+app.use(express.static(path.join(__dirname, "public")));
+
