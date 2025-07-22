@@ -13,3 +13,14 @@ const clients = new Map();
 
 app.use(express.static(path.join(__dirname, "public")));
 
+
+
+
+
+
+
+
+
+server.listen(httpPort, () => {
+  console.log(`HTTP server running on http://localhost:${httpPort}`);
+});
