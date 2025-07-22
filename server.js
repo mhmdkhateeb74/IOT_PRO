@@ -48,6 +48,16 @@ wss.on("connection", (ws) => {
 });
 
 
+const webClients = new Set();
+
+function broadcastToWebClients(data) {
+  webClients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+}
+
 
 server.listen(httpPort, () => {
   console.log(`HTTP server running on http://localhost:${httpPort}`);
