@@ -58,6 +58,16 @@ function broadcastToWebClients(data) {
   });
 }
 
+const htmlWss = new WebSocket.Server({ noServer: true });
+
+server.on("upgrade", (req, socket, head) => {
+  if (req.url === "/status") {
+    htmlWss.handleUpgrade(req, socket, head, (ws) => {
+      htmlWss.emit("connection", ws, req);
+    });
+  }
+});
+
 
 server.listen(httpPort, () => {
   console.log(`HTTP server running on http://localhost:${httpPort}`);
