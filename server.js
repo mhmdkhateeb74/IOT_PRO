@@ -69,6 +69,25 @@ server.on("upgrade", (req, socket, head) => {
 });
 
 
+htmlWss.on("connection", (ws) => {
+  webClients.add(ws);
+  ws.on("close", () => webClients.delete(ws));
+
+  ws.on("message", (msg) => {
+    try {
+      const data = JSON.parse(msg);
+      const target = clients.get(data.id);
+      if (target && target.readyState === WebSocket.OPEN) {
+        target.send(JSON.stringify(data));
+        console.log(`Sent cancellation to ${data.id}`);
+      }
+    } catch (e) {
+      console.log("HTML client error:", e.message);
+    }
+  });
+});
+
+
 server.listen(httpPort, () => {
   console.log(`HTTP server running on http://localhost:${httpPort}`);
 });
