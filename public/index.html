@@ -19,6 +19,15 @@
   <h1>סטטוס מערכת בזמן אמת</h1>
   <div id="status">ממתין להתחברות...</div>
   <button id="cancel">ביטול מצוקה</button>
+    
+  <script>
+    const ws = new WebSocket("ws://" + location.host + "/status");
+    let currentId = "esp1";
+
+    ws.onopen = () => {
+      console.log("WebSocket connected");
+      document.getElementById("status").textContent = "מחובר לשרת";
+    };
 
   
 </head>
