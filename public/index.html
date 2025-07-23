@@ -54,6 +54,16 @@
       console.error("WebSocket error:", error);
     };
 
+     document.getElementById("cancel").onclick = () => {
+      if (ws.readyState === WebSocket.OPEN) {
+        const cancelMsg = JSON.stringify({ id: currentId, status: "ניטרול" });
+        ws.send(cancelMsg);
+        console.log("Sent cancellation command");
+      } else {
+        alert("החיבור לשרת לא פעיל. נסה שוב מאוחר יותר.");
+      }
+    };
+
     
    </script>
 </body>
