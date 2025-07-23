@@ -29,6 +29,21 @@
       document.getElementById("status").textContent = "מחובר לשרת";
     };
 
+     ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.status && data.id) {
+          document.getElementById("status").textContent = "סטטוס: " + data.status;
+          currentId = data.id;
+        } else if (data.message) {
+          console.log("Server message:", data.message);
+        } else {
+          console.log("Unknown JSON message:", data);
+        }
+      } catch (e) {
+        console.log("Received non-JSON message:", event.data);
+      }
+    };
 
     
    </script>
